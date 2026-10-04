@@ -31,7 +31,7 @@ void print_on_terminal() {
         escaped = escaped || (std::abs(z) > 2);
       }
 
-      std::cout << (escaped ? "#" : ".");
+      std::cout << (escaped ? " " : ".");
     }
     std::cout << "\n";
   }
@@ -119,5 +119,5 @@ int main(int argv, char **argc) {
     MAX_ITER = std::stod(argc[3]);
   }
 
-  make_image();
+  print_on_terminal();
 }
