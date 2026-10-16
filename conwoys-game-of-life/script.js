@@ -10,7 +10,7 @@ canvas.height = HEIGHT;
 canvas.width = WIDTH;
 
 const SPEED = 100;
-const SIZE = 50;
+const SIZE = 20;
 const dx = [0, 0, 1, -1, 1, -1, 1, -1];
 const dy = [1, -1, 0, 0, 1, -1, -1, 1];
 
@@ -47,8 +47,10 @@ window.addEventListener("resize", () => {
 
 
 function initialConfig() {
-    let row = 20;
-    let col = 20;
+    const row = Math.min(20, n - 4);
+    const col = Math.min(20, m - 4);
+
+    if (row < 3 || col < 3) return;
 
     cells[row][col] = 1;
     cells[row + 1][col] = 1;
@@ -117,7 +119,7 @@ function render() {
     ctx.fillStyle = "white"
 
     for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
+        for (let j = 0; j < m; j++) {
             if (cells[i][j] === 1) {
                 ctx.fillRect(
                     i * SIZE,
