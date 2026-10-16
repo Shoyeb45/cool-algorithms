@@ -12,12 +12,27 @@
             width: 100%;
             height: 100%;
         }
+        #config-btn {
+            position: absolute; 
+            top: 1; 
+            right: 1; 
+            font-size: x-large; 
+            padding: 4px; 
+            border: 2px gray solid;
+        }
+        #config-btn:hover {
+            background-color: bisque;
+        }
     </style>
 </head>
 <body>
     <div style="display: flex; justify-items: center; justify-content: center;">
         <canvas id="canvas"></canvas>
     </div>
+    <!-- I can set up initial config, speed, row width -->
+    <button id="config-btn">
+        Set Initial Config
+    </button>
     <script src="./script.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const configBtn = document.getElementById("config-btn")
+let isConfigState = false;
 
 let WIDTH = window.innerWidth;
 let HEIGHT = window.innerHeight;
@@ -45,8 +47,8 @@ window.addEventListener("resize", () => {
 
 
 function initialConfig() {
-    const row = 20;
-    const col = 20;
+    let row = 20;
+    let col = 20;
 
     cells[row][col] = 1;
     cells[row + 1][col] = 1;
@@ -97,6 +99,17 @@ function update() {
     cells = nextCells;
 }
 
+function drawGrid() {
+    ctx.fillStyle = "#444"
+    for (let x = 0; x <= WIDTH; x += SIZE) {
+        ctx.fillRect(x, 0, 1, HEIGHT);
+    }
+
+    for (let y = 0; y <= HEIGHT; y += SIZE) {
+        ctx.fillRect(0, y, WIDTH, 1);
+    }
+}
+
 function render() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -116,19 +129,13 @@ function render() {
         }
     } 
 
-    ctx.fillStyle = "#444"
-    for (let x = 0; x <= WIDTH; x += SIZE) {
-        ctx.fillRect(x, 0, 1, HEIGHT);
-    }
-
-    for (let y = 0; y <= HEIGHT; y += SIZE) {
-        ctx.fillRect(0, y, WIDTH, 1);
-    }
-
+    drawGrid();
 }
 
 let lastUpdate = 0;
 function gameLoop(timestamp) {
+    console.log(isConfigState)
+    if (isConfigState) return;
     if (timestamp - lastUpdate >= SPEED) {
         update()
         lastUpdate = timestamp
@@ -140,3 +147,35 @@ function gameLoop(timestamp) {
 initialConfig()
 render();
 requestAnimationFrame(gameLoop);
+
+
+// DOM Manipulation
+configBtn.addEventListener("click", () => {
+    if (!isConfigState) {
+        isConfigState = true;
+        configBtn.textContent = "Finish Config"
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        drawGrid()
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < m; j++) {
+                cells[i][j] = 0;
+            }
+        }
+    } else {
+        isConfigState = false
+        configBtn.textContent = "Set Initial Config"
+        requestAnimationFrame(gameLoop);
+    }
+});
+
+canvas.addEventListener("click", (e) => {
+    if (!isConfigState) return
+
+    let x = Math.floor(e.x / SIZE);
+    let y = Math.floor(e.y / SIZE);
+    
+    ctx.fillStyle = "white"
+    ctx.fillRect(x * SIZE, y * SIZE, SIZE, SIZE)
+    cells[x][y] = 1;
+})
